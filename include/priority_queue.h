@@ -5,7 +5,7 @@
  * 
  ****************************************************************** 
  *
- * heap.h: Heap data structure header file
+ * priority_queue.h: Priority Queue data structure header file
  */
 
 #ifndef PRIORITY_QUEUE_H_
