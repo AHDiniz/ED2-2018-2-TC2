@@ -23,7 +23,7 @@ typedef struct priorityQueue PriorityQueue;
  * Condition: size that is appropriate to the computer's memory
  * Side effects: the priority queue is DYNAMICALLY ALLOCATED, REMEMBER TO DESTROY IT WHEN IT'S NOT BEING USED ANYMORE!!!
  */
-PriorityQueue *Heap_Create(int size);
+PriorityQueue *PQueue_Create(int size);
 
 /**
  * Function that destroys a priority queue:
@@ -33,7 +33,7 @@ PriorityQueue *Heap_Create(int size);
  * Conditions: existent and allocated priority queue
  * Side effects: the pointer will point to NULL
  */
-PriorityQueue *Heap_Destroy(ProrityQueue *priorityQueue);
+PriorityQueue *PQueue_Destroy(ProrityQueue *priorityQueue);
 
 /** */
 
