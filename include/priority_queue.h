@@ -21,6 +21,8 @@ typedef struct pQueue PQueue;
 typedef (void) (*PQItem_Destroy) (void *);
 // Definition of the item comparision callback:
 typedef (int) (*PQItem_Compare) (void *, void *);
+// Definition of the item switching callback:
+typedef (void) (*PQItem_Switch) (void *, void *);
 
 /**
  * Function that creates a priority queue:
@@ -70,7 +72,7 @@ int PQueue_GetSize(PQueue *pQueue);
  * Conditions: the queue and the item must exist and be allocated and the key must be a valid one (depends on the context)
  * Side effects: a new item is added to the queue
  */
-bool PQueue_Insert(PQueue *pQueue, void *item, int priority);
+bool PQueue_Insert(PQueue *pQueue, void *item, PQItem_Switch Switch, PQItem_Compare Cmp);
 
 /**
  * Function that returns the item with the most important priority in the queue
