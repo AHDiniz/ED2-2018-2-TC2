@@ -17,6 +17,8 @@
 // Definition of the priority queue data type:
 typedef struct pQueue PQueue;
 
+// Definition of the item destruction callback:
+typedef (void) (*PQItem_Destroy) (void *);
 // Definition of the item comparision callback:
 typedef (int) (*PQItem_Compare) (void *, void *);
 
@@ -38,7 +40,7 @@ PQueue *PQueue_Create(int size);
  * Conditions: existent and allocated priority queue
  * Side effects: the pointer will point to NULL
  */
-PQueue *PQueue_Destroy(PQueue *pQueue);
+PQueue *PQueue_Destroy(PQueue *pQueue, PQItem_Destroy Destroy);
 
 /**
  * Function that checks if the queue is empty
