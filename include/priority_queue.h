@@ -17,13 +17,6 @@
 // Definition of the priority queue data type:
 typedef struct pQueue PQueue;
 
-// Definition of the item destruction callback:
-typedef (void) (*PQItem_Destroy) (void *);
-// Definition of the item comparision callback:
-typedef (int) (*PQItem_Compare) (void *, void *);
-// Definition of the item switching callback:
-typedef (void) (*PQItem_Switch) (void *, void *);
-
 /**
  * Function that creates a priority queue:
  * 
@@ -42,7 +35,7 @@ PQueue *PQueue_Create(int size);
  * Conditions: existent and allocated priority queue
  * Side effects: the pointer will point to NULL
  */
-PQueue *PQueue_Destroy(PQueue *pQueue, PQItem_Destroy Destroy);
+PQueue *PQueue_Destroy(PQueue *pQueue);
 
 /**
  * Function that checks if the queue is empty
@@ -67,12 +60,12 @@ int PQueue_GetSize(PQueue *pQueue);
 /**
  * Function that inserts a item with certain priority in the queue:
  * 
- * Inputs: pointer to the priority queue, pointer to the item, the priority that the item will have
+ * Inputs: pointer to the priority queue, the item
  * Output: an boolean that tells if the operation was or wasn't a success
  * Conditions: the queue and the item must exist and be allocated and the key must be a valid one (depends on the context)
  * Side effects: a new item is added to the queue
  */
-bool PQueue_Insert(PQueue *pQueue, void *item, PQItem_Switch Switch, PQItem_Compare Cmp);
+bool PQueue_Insert(PQueue *pQueue, int item);
 
 /**
  * Function that returns the item with the most important priority in the queue
@@ -82,7 +75,7 @@ bool PQueue_Insert(PQueue *pQueue, void *item, PQItem_Switch Switch, PQItem_Comp
  * Conditions: the queue must be existent and allocated
  * Side effects: none
  */
-void *PQueue_GetFirst(PQueue *pQueue);
+int PQueue_GetFirst(PQueue *pQueue);
 
 /**
  * Function that removes the most important item from the queue
@@ -92,16 +85,6 @@ void *PQueue_GetFirst(PQueue *pQueue);
  * Conditions: the queue must be existent and allocated
  * Side effects: the item is removed from the queue
  */
-void *PQueue_RemoveFirst(PQueue *pQueue);
-
-/**
- * Function that changes the key from a given item:
- * 
- * Inputs: pointers to the queue, the item and the item comparision function and the item's new key
- * Output: an integer that tells if the operation was or wasn't a success
- * Conditions: existent and allocated queue and item, existent function and valid key (the last depends on the context)
- * Side effects: the target item's key is changed to the entry key
- */
-int PQueue_ChangeKey(PQueue *pQueue, void *item, int key, PQItem_Compare Cmp);
+int PQueue_RemoveFirst(PQueue *pQueue);
 
 #endif // PRIORITY_QUEUE_H_

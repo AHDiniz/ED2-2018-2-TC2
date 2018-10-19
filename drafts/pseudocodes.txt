@@ -1,0 +1,64 @@
+How to solve each Bin Packing Heuristic:
+
+(Only interested in the amouont of discs created)
+
+1 - Worst Fit:
+
+Worst_Fit(files[], limit)
+{
+    discs[];
+    discPos = 0;
+    for (i from 0 to files.length - 1)
+    {
+        if (discs.length == 0 || limit < files[i] + discs[discPos])
+        {
+            discs[discPos] += files[i];
+        }
+        else
+        {
+            discPos++;
+        }
+    }
+    return discs.length;
+}
+
+2 - Decreasing Worst Fit:
+
+Decreasing_Worst_Fit(files[], limit)
+{
+    sort(files[]);
+    return Worst_Fit(files, limit);
+}
+
+3 - Best Fit:
+
+Best_Fit(files[], limit)
+{
+    discs[];
+    discPos = 0;
+    for (i from 0 to files.length - 1)
+    {
+        minPos = GetMin(discs);
+        if (discs.length == 0)
+        {
+            discs[discPos] += files[i];
+        }
+        else if (limit < files[i] + discs[minPos])
+        {
+            discs[minPos] += files[i];
+        }
+        else
+        {
+            discPos++;
+        }
+    }
+    return discs.length;
+}
+
+4 - Decreasing Best Fit:
+
+Decreasing_Best_Fit(files[], limit)
+{
+    sort(files[]);
+    return Best_Fit(files, limit);
+}

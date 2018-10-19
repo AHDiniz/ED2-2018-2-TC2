@@ -11,96 +11,92 @@
 #include "../include/priority_queue.h"
 #include <stdlib.h>
 
+#define EXCH(a, b) { int t = (a); (a) = (b); (b) = t; }
+
 // Implementing the priority queue data structure:
 struct pQueue
 {
-    void **queue; // The array of pointers to items that represents the queue (position 0 is for the size)
+    int *queue; // The array of pointers to items that represents the queue (position 0 is for the size)
+    int limit; // The maximum amount of items that the queue can hold
 };
 
-// Auxiliar functions:
-
-/**
- * Function that brings a item up to the heap:
- * 
- * Inputs: pointer to the queue, to the item and the value of the key
- * Output: none
- * Conditions: existent and allocated queue and item, valid key
- * Side effects: the position of some items will be changed
- */
-static void PQueue_SwimUp(PQueue *pQueue, void *item, int pos, PQItem_Switch Switch, PQItem_Compare Cmp);
-
-/**
- * Function that brings a item down to the heap:
- * 
- * Inputs: pointer to the queue and the position of the item
- */
-
-// Implementing the function that creates a priority queue:
+// Implementing the function that creates the priority queue:
 PQueue *PQueue_Create(int size)
 {
-    PQueue *pQueue = malloc(sizeof(PQueue)); // Allocating space for the queue:
-    pQueue->queue = malloc(sizeof(void*) * size + 1); // Allocating space for the queue
-    // Setting the amount of items in the queue:
-    *(pQueue->queue[0]) = 0;
+    PQueue *pQueue = malloc(sizeof(PQueue)); // Allocating space to the priority queue
+    pQueue->queue = malloc(sizeof(int) * size + 1); // Allocating space to the queue's array
+    pQueue->limit = size; // Storing the maximum amount of items that the queue can have
     return pQueue; // Returning the queue
 }
 
-// Implementing the function that destroys the priority queue and it's items:
-PQueue *PQueue_Destroy(PQueue *pQueue, PQItem_Destroy Destroy)
+// Implementing the function that destroys the priority queue:
+PQueue *PQueue_Destroy(PQueue *pQueue)
 {
-    for (int i = 1; i < *(pQueue->queue[0]); i++)
-    {
-        Destroy(pQueue->queue[i]); // Destrying each item in the queue
-    }
-    free(pQueue->queue[0]); // Destroying the size pointer
-    free(pQueue->queue); // Destroying the queue array
-    free(pQueue); // Destroying the data structure
+    free(pQueue->queue); // Destroying the queue's array
+    free(pQueue); // Destroying the queue
     return NULL;
 }
 
 // Implementing the function that tells if the queue is empty:
 bool PQueue_Empty(PQueue *pQueue)
 {
-    return (int)(*(pQueue->queue[0])) == 0;
+    return pQueue->queue[0] == 0; // Checking if there are items in the queue:
 }
 
 // Implementing the function that returns the size of the queue:
 int PQueue_GetSize(PQueue *pQueue)
 {
-    return (int)(*(pQueue->queue[0]));
+    return pQueue->queue[0]; // Returing the size of the queue
 }
 
-// Implementing the function that inserts an item with a certain key:
-bool PQueue_Insert(PQueue *pQueue, void *item, PQItem_Switch Switch, PQItem_Compare Cmp)
+// Implementing the function that inserts an item in the queue:
+bool PQueue_Insert(PQueue *pQueue, int item)
 {
-    pQueue->queue[0]++;
-    pQueue->queue[pQueue->queue[0]] = item;
-    PQueue_SwimUp(pQueue, item, pQueue->queue[0], Switch, Cmp);
-}
-
-static void PQueue_SwimUp(PQueue *pQueue, void *item, int pos, PQItem_Switch Switch, PQItem_Compare Cmp)
-{
-    while (pos > 1 && Cmp(pQueue->queue[pos / 2], pQueue->queue[pos]) < 0)
+    int top = ++pQueue->queue[0]; // Incrementing the size of the queue
+    if (top > pQueue->limit) // Checking if the size is valid
     {
-        Switch(pQueue->queue[pos], pQueue->queue[pos / 2]);
-        k /= 2;
+        // If it isn't, then the size will be decremented and the operation will return false:
+        pQueue->queue[0]--;
+        return false;
     }
+    pQueue->queue[top] = item; // Putting the item in the queue
+    // Fixing the position of the item:
+    while (top > 1 && pQueue->queue[top / 2] > pQueue->queue[top]) // While the item is smaller then it's father...
+    {
+        EXCH(pQueue->queue[top / 2], pQueue->queue[top]); // Changing the positions
+        top /= 2; // Getting the position of the new father
+    }
+    return true;
 }
 
-// Implementing the function that returns the most important item in the queue:
-void *PQueue_GetFirst(PQueue *pQueue)
+// Implementing the function that gets the most important item in the queue: 
+int PQueue_GetFirst(PQueue *pQueue)
 {
-    return pQueue->queue[1];
+    return pQueue->queue[1]; // Returning the item without removing it
 }
 
-// Implementing the function that removes and returns the most important item in the queue:
-void *PQueue_RemoveFirst(PQueue *pQueue)
+// Implementing the function that removes the most important item in the queue:
+int PQueue_RemoveFirst(PQueue *pQueue)
 {
-
-}
-
-// Implementing the function that changes the key of an item in the queue:
-int PQueue_ChangeKey(PQueue *pQueue, void *item, int key, PQItem_Compare Cmp)
-{
-
+    int size = --pQueue->queue[0]; // Updating the queue's size
+    if (size < 0) // Checking if the size is valid
+    {
+        // If it isn't then it will be fixed and the operation will return 0:
+        pQueue->queue[0]++;
+        return 0;
+    }
+    int min = pQueue->queue[1]; // Getting the most important item in the queue
+    EXCH(min, pQueue->queue[pQueue->queue[0] + 1]); // Putting it in a position that "isn't in the queue anymore" (the size was updated to not reach this position)
+    int k = 1; // Loop counter
+    while (2 * k <= size) // If the supposed position of the son is not bigger then the size...
+    {
+        int j = 2 * k; // Storing the son's position
+        // If the 2k pos. son is bigger then the 2k+1 pos. son, the 2k+1 pos. son will be exchanged with the current item
+        if (j < size && pQueue->queue[j] > pQueue->queue[j + 1]) j++;
+        // If the current item and the son are equal, the operation can stop
+        if (pQueue->queue[k] <= pQueue->queue[j]) break;
+        EXCH(pQueue->queue[k], pQueue->queue[j]); // Exchanging the son and the father
+        k = j; // Updating the counter
+    }
+    return min; // Returing the most important item
 }
