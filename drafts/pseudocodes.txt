@@ -39,7 +39,38 @@ Decreasing_Worst_Fit(files[], limit)
 // Only create new bin when weight doesn't fit in any existent bin
 Best_Fit(files[], limit)
 {
-    
+    bins = new BST(); // Binary Search Tree
+    size = 0;
+    for (i from 0 to files.length - 1)
+    {
+        if (!Find_Best_Node(bins.root, files[i], limit, bins))
+        {
+            bins.add(files[i]);
+            size++;
+        }
+    }
+    return size;
+}
+
+// Function that looks for the node with the smallest empty space that can fit the weight
+Find_Best_Node(bin, data, limit, tree)
+{
+    if (bin == NULL) return false;
+    if (bin.right != null)
+        result = Find_Best_Node(bin.right, data, limit, tree);
+    if (!result)
+    {
+        if (bin.key + data > limit)
+            result = Find_Best_Node(bin.left, data, limit, tree);
+        else
+        {
+            tree.remove(bin);
+            bin.key += data;
+            tree.insert(bin);
+            result = true;
+        }
+    }
+    return result;
 }
 
 4 - Decreasing Best Fit:

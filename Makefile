@@ -31,5 +31,8 @@ priority_queue.o: $(SRC)/priority_queue.c
 main.o: $(SRC)/main.c
 	$(CC) -c $^ $(C_FLAGS)
 
-$(EXECUTABLE): main.o priority_queue.o
+fit.o: $(SRC)/fit.c
+	$(CC) -c $^ $(C_FLAGS)
+
+$(EXECUTABLE): main.o priority_queue.o fit.o
 	$(CC) -o $@ $^ $(C_FLAGS) && $(RM) *.o
