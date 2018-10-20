@@ -1,25 +1,28 @@
 How to solve each Bin Packing Heuristic:
 
-(Only interested in the amouont of discs created)
+(Only interested in the amouont of bins created)
 
 1 - Worst Fit:
 
+// Look for the queue with the biggest empty space that can fit the weight
+// Only create new bin when weight doesn't fit in any existent bin
 Worst_Fit(files[], limit)
 {
-    discs[];
-    discPos = 0;
+    bins = new PQueue(); // Min Heap implementation
     for (i from 0 to files.length - 1)
     {
-        if (discs.length == 0 || limit < files[i] + discs[discPos])
+        if (bins.length == 0)
+            bins.insert(files[i])
+        min = bins.removeMin(); // Getting the smallest item in the queue
+        if (min + files[i] > limit)
         {
-            discs[discPos] += files[i];
+            bins.insert(min);
+            bins.insert(files[i]);
         }
         else
-        {
-            discPos++;
-        }
+            bins.insert(min + files[i]);
     }
-    return discs.length;
+    return bins.length;
 }
 
 2 - Decreasing Worst Fit:
@@ -32,27 +35,11 @@ Decreasing_Worst_Fit(files[], limit)
 
 3 - Best Fit:
 
+// Look for the bin with the smallest empty space that can fit the weight
+// Only create new bin when weight doesn't fit in any existent bin
 Best_Fit(files[], limit)
 {
-    discs[];
-    discPos = 0;
-    for (i from 0 to files.length - 1)
-    {
-        minPos = GetMin(discs);
-        if (discs.length == 0)
-        {
-            discs[discPos] += files[i];
-        }
-        else if (limit < files[i] + discs[minPos])
-        {
-            discs[minPos] += files[i];
-        }
-        else
-        {
-            discPos++;
-        }
-    }
-    return discs.length;
+    
 }
 
 4 - Decreasing Best Fit:
