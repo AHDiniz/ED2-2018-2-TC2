@@ -62,7 +62,7 @@ bool PQueue_Insert(PQueue *pQueue, int item)
     }
     pQueue->queue[top] = item; // Putting the item in the queue
     // Fixing the position of the item:
-    while (top > 1 && pQueue->queue[top / 2] < pQueue->queue[top]) // While the item is smaller then it's father...
+    while (top > 1 && pQueue->queue[top / 2] > pQueue->queue[top]) // While the item is smaller then it's father...
     {
         EXCH(pQueue->queue[top / 2], pQueue->queue[top]); // Changing the positions
         top /= 2; // Getting the position of the new father
@@ -93,9 +93,9 @@ int PQueue_RemoveFirst(PQueue *pQueue)
     {
         int j = 2 * k; // Storing the son's position
         // If the 2k pos. son is bigger then the 2k+1 pos. son, the 2k+1 pos. son will be exchanged with the current item
-        if (j < size && pQueue->queue[j] < pQueue->queue[j + 1]) j++;
+        if (j < size && pQueue->queue[j] > pQueue->queue[j + 1]) j++;
         // If the current item and the son are equal, the operation can stop
-        if (pQueue->queue[k] >= pQueue->queue[j]) break;
+        if (pQueue->queue[k] <= pQueue->queue[j]) break;
         EXCH(pQueue->queue[k], pQueue->queue[j]); // Exchanging the son and the father
         k = j; // Updating the counter
     }
