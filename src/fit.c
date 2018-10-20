@@ -1,3 +1,13 @@
+/**
+ * ED2-2018-2-TC2: Creating a heuristic for the Bin Packing Problem
+ * 
+ * Author: Alan Herculano Diniz
+ * 
+ ****************************************************************** 
+ *
+ * fit.c: Bin Packing implementation file
+ */
+
 #include "../include/fit.h"
 #include "../include/priority_queue.h"
 #include <stdlib.h>

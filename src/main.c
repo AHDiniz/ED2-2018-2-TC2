@@ -6,6 +6,8 @@
  ****************************************************************** 
  *
  * main.c: Program's entry point
+ * 
+ * TODO: test the BST data structure
  */
 
 #include <stdio.h>
