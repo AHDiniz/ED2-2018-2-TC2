@@ -87,4 +87,14 @@ int PQueue_GetFirst(PQueue *pQueue);
  */
 int PQueue_RemoveFirst(PQueue *pQueue);
 
+/**
+ * Function that prints the elements in the queue
+ * 
+ * Input: pointer to the queue
+ * Output: none
+ * Conditions: the queue most be existent and allocated
+ * Side Effects: every item in the queue is printed
+ */
+void PQueue_Print(PQueue *pQueue);
+
 #endif // PRIORITY_QUEUE_H_

@@ -15,26 +15,22 @@
 
 int main(int argc, char *argv[])
 {
-	// Testing the priority queue:
+	FILE *file = fopen(argv[1], "r"); // Opening the given file
+	int queueSize; // This will hold the size of the priority queue
 	
-	// Getting the amount of integers in the file with the file name:
-	char *filename = argv[1];
-	int stringSize = strlen(filename) - 4;
-	char *fnameNoExt = malloc(stringSize);
-	fnameNoExt[stringSize - 1] = '\0';
-	strncpy(fnameNoExt, filename, stringSize - 1);
+	fscanf(file, "%d\n", &queueSize); // Reading the first line to get the size of the queue
+	printf("Amount of items = %d\n", queueSize);
+	PQueue *pQueue = PQueue_Create(queueSize); // Creating the queue with the given size
 
-	int amountOfItems = atoi(fnameNoExt); // Getting the amount of items in the file
+	while (!feof(file))
+	{
+		int num; // Number that will be inserted in the queue
+		fscanf(file, "%d\n", &num); // Reading the number that will be inserted
+		PQueue_Insert(pQueue, num); // Inserting the number in the queue
+	}
+	PQueue_Print(pQueue); // Printing the queue
 
-	PQueue *pQueue = PQueue_Create(amountOfItems); // Creating a new priority queue
-
-	// Opening the file that contains the integers:
-	FILE *file = fopen(filename, "r");
-
-	
-
-	fclose(file); // Closing the file
-
-	PQueue_Destroy(pQueue); // Destroying the priority queue
+	fclose(file); // Closing the given file
+	PQueue_Destroy(pQueue); // Destroying the queue
 	return 0;
 }

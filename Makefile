@@ -5,25 +5,31 @@
 # Project's makefile
 
 CC		:= gcc
-C_FLAGS := -Wall -Wextra -g -O3
+C_FLAGS := -Wall -g -O3
 
 BIN		:= bin
 SRC		:= src
 INCLUDE	:= include
 
 ifeq ($(OS),Windows_NT)
-EXECUTABLE	:= main.exe
+EXECUTABLE	:= trab2.exe
 else
-EXECUTABLE	:= main
+EXECUTABLE	:= trab2
 endif
 
-all: $(BIN)/$(EXECUTABLE)
+all: $(EXECUTABLE)
 
 clean:
-	-$(RM) $(BIN)/$(EXECUTABLE)
+	$(RM) $(EXECUTABLE)
 
 run: all
-	./$(BIN)/$(EXECUTABLE)
+	./$(EXECUTABLE)
 
-$(BIN)/$(EXECUTABLE): $(SRC)/*
-	$(CC) $(C_FLAGS) -I$(INCLUDE) -L$(LIB) $^ -o $@
+priority_queue.o: $(SRC)/priority_queue.c
+	$(CC) -c $^ $(C_FLAGS)
+
+main.o: $(SRC)/main.c
+	$(CC) -c $^ $(C_FLAGS)
+
+$(EXECUTABLE): main.o priority_queue.o
+	$(CC) -o $@ $^ $(C_FLAGS) && $(RM) *.o
