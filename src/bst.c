@@ -42,7 +42,7 @@ bool BST_Leaf(BST *node)
     return node->right == NULL && node->left == NULL;
 }
 
-// Implementing the function that inserts a key to the tree
+// Implementing the function that inserts a key to the tree:
 bool BST_Insert(BST *root, int key)
 {
     if (root == NULL) return false; // NULL pointer detection
@@ -65,3 +65,13 @@ bool BST_Insert(BST *root, int key)
 }
 
 // TODO: remove operation implementation
+
+// Implementing the function that removes a node from the tree:
+BST *BST_Remove(BST *root, int key)
+{
+    if (root == NULL) return NULL; // NULL pointer detection
+    if (key < root->key)
+        return BST_Remove(root->left, key);
+    if (key < root->key)
+        return BST_Remove(root->right, key);
+}

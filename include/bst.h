@@ -58,4 +58,14 @@ bool BST_Insert(BST *root, int key);
 
 // TODO: remove operation's prototype
 
+/**
+ * Function that removes a node from the tree
+ * 
+ * Inputs: pointer to the tree's root node and the target node's key
+ * Output: pointer to the target node
+ * Conditions: existent and allocated tree
+ * Side effects: the tree will be reorganized
+ */
+BST *BST_Remove(BST *root, int key);
+
 #endif // BST_H_
