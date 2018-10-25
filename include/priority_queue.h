@@ -88,6 +88,16 @@ int PQueue_GetFirst(PQueue *pQueue);
 int PQueue_RemoveFirst(PQueue *pQueue);
 
 /**
+ * Function that changes a key from a certain item
+ * 
+ * Inputs: pointer to the queue, the key that will be changed and the new key
+ * Output: none
+ * Conditions: existent and valid queue
+ * Side effects: the key will be changed and the queue will be reorganized
+ */
+void PQueue_ChangeKey(PQueue *pQueue, int prevKey, int newKey);
+
+/**
  * Function that prints the elements in the queue
  * 
  * Input: pointer to the queue
