@@ -15,6 +15,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include "../include/fit.h"
+#include "../include/priority_queue.h"
 
 #define LIMIT 1000000
 
@@ -43,7 +44,13 @@ int main(int argc, char *argv[])
 	// Creating the decreasing ordered array:
 	int *wSort = malloc(sizeof(int) * length); // Allocating the array that will be sorted
 	for (i = 0; i < length; i ++) wSort[i] = weights[i]; // Copying the original array into the new one
-	qsort(wSort, length, sizeof(int), Cmp); // Sorting the new array
+	
+	PQueue *sorter = PQueue_Create(length);
+
+	for (i = 0; i < length; i++) PQueue_Insert(sorter, wSort[i]);
+	for (i = length - 1; i >= 0; i--) wSort[i] = PQueue_RemoveFirst(sorter);
+
+	PQueue_Destroy(sorter);
 	
 	// Applying the worst fit heuristic:
 	printf("%d\n", WorstFit(weights, length, LIMIT));
@@ -58,11 +65,4 @@ int main(int argc, char *argv[])
 	free(wSort);
 
 	return 0;
-}
-
-int Cmp(const void *a, const void *b)
-{
-	int *numA = (int *)a;
-	int *numB = (int *)b;
-	return (*numA - *numB);
 }

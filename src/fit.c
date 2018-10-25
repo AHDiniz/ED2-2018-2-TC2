@@ -28,17 +28,16 @@ int WorstFit(int *weights, int length, int limit)
         {
             // Getting the bin with the biggest empty space:
             int first = PQueue_GetFirst(bins);
-            
             // Checking if the weight fits in the bin:
             if (first + weights[i] <= limit)
             {
-                printf("%d\n", first + weights[i]);
-                PQueue_ChangeKey(bins, first, first + weights[i]);
+                first = PQueue_RemoveFirst(bins);
+                PQueue_Insert(bins, first + weights[i]);
             }
             else PQueue_Insert(bins, weights[i]); // If the weight doesn't fit, create new bin
         }
     }
-    PQueue_Print(bins);
+    // PQueue_Print(bins);
     int result = PQueue_GetSize(bins);
     PQueue_Destroy(bins);
     return result;

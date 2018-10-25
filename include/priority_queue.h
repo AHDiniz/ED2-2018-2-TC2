@@ -90,6 +90,8 @@ int PQueue_RemoveFirst(PQueue *pQueue);
 /**
  * Function that changes a key from a certain item
  * 
+ * ! Probably needs to be fixed
+ * 
  * Inputs: pointer to the queue, the key that will be changed and the new key
  * Output: none
  * Conditions: existent and valid queue
