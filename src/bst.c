@@ -66,35 +66,22 @@ bool BST_Leaf(BST *node)
 bool BST_Insert(BST *root, int key)
 {
     if (root == NULL) return false; // NULL pointer detection
-    // if (root->key > key) // If the given key is smaller then the root's key...
-    // {
-    //     // The key will be added to the left subtree:
-    //     if (root->left != NULL) return BST_Insert(root->left, key);
-    //     BST *node = BST_Create(key);
-    //     root->left = node;
-    //     return true;
-    // }
-    // else // If the given key is smaller then or equal to the root's key...
-    // {
-    //     // The key will be added to the right subtree:
-    //     if (root->right != NULL) return BST_Insert(root->right, key);
-    //     BST *node = BST_Create(key);
-    //     root->right = node;
-    //     return true;
-    // }
 
-    // Trying iterative implementation:
     BST *current = root; // Current item in the tree
     BST *prev; // Previous item in the tree
     while (current != NULL) // Looping while the current node is not NULL
     {
-        prev = current;
+        prev = current; // Storing the value of the current node in the loop
+        // Checking the value of the key and deciding to go to the left or right subtree:
         current = (current->key > key) ? current->left : current->right;
     }
+    
+    // Checking where to put the new node:
     if (prev->key > key)
         prev->left = BST_Create(key);
     else
         prev->right = BST_Create(key);
+    
     return true;
 }
 

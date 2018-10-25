@@ -33,8 +33,12 @@ int main(int argc, char *argv[])
 
     printf("Is the tree a lead node? %s\n", (BST_Leaf(tree)) ? "Yes" : "No");
 
-    int removed;
-    tree = BST_Remove(tree, num, &removed);
+    int removed = num;
+
+    printf("Insira o valor do no que sera removido da arvore:\n");
+    scanf("%d", &removed);
+
+    tree = BST_Remove(tree, removed);
 
     BST_Print(tree); // Printing the tree
     printf("\n");

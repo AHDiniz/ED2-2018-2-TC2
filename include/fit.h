@@ -21,8 +21,6 @@
  */
 int WorstFit(int *weights, int length, int limit);
 
-// TODO: make the prototype to the best fit heuristic
-
 /**
  * Function that implements the best fit heuristic
  * 
