@@ -11,6 +11,7 @@
 #include "../include/priority_queue.h"
 #include <stdio.h>
 #include <stdlib.h>
+#include <math.h>
 
 #define EXCH(a, b) { int t = (a); (a) = (b); (b) = t; }
 
@@ -88,7 +89,7 @@ int PQueue_RemoveFirst(PQueue *pQueue)
         return 0;
     }
     int min = pQueue->queue[1]; // Getting the most important item in the queue
-    EXCH(min, pQueue->queue[pQueue->queue[0] + 1]); // Putting it in a position that "isn't in the queue anymore" (the size was updated to not reach this position)
+    EXCH(pQueue->queue[1], pQueue->queue[pQueue->queue[0] + 1]); // Putting it in a position that "isn't in the queue anymore" (the size was updated to not reach this position)
     int k = 1; // Loop counter
     while (2 * k <= size) // If the supposed position of the son is not bigger then the size...
     {
@@ -107,7 +108,16 @@ int PQueue_RemoveFirst(PQueue *pQueue)
 void PQueue_Print(PQueue *pQueue)
 {
     printf("Amount of items = %d\n", pQueue->queue[0]);
+    int level = 0;
+    printf("Level = %d: ", level);
     for (int i = 1; i <= pQueue->queue[0]; i++)
+    {
+        if (i == pow(2, level + 1))
+        {
+            level++;
+            printf("\nLevel = %d: ", level);
+        }
         printf("%d ", pQueue->queue[i]);
+    }
     printf("\n");
 }

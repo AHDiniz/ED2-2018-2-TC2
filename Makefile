@@ -5,7 +5,7 @@
 # Project's makefile
 
 CC		:= gcc
-C_FLAGS := -Wall -g -O2
+C_FLAGS := -Wall -g -O2 -lm
 
 BIN		:= bin
 SRC		:= src
@@ -37,7 +37,10 @@ fit.o: $(SRC)/fit.c
 bst.o: $(SRC)/bst.c
 	$(CC) -c $^ $(C_FLAGS)
 
-bstTest: $(SRC)/bstTest.c $(SRC)/bst.c
+bstTest: $(SRC)/bstTest.c $(SRC)/bst.o
+	$(CC) -o $@ $^ $(C_FLAGS)
+
+pqTest: $(SRC)/pqTest.c $(SRC)/priority_queue.o
 	$(CC) -o $@ $^ $(C_FLAGS)
 
 $(EXECUTABLE): main.o priority_queue.o fit.o bst.o
