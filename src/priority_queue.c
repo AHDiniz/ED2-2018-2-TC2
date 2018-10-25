@@ -15,12 +15,56 @@
 
 #define EXCH(a, b) { int t = (a); (a) = (b); (b) = t; }
 
+
+
 // Implementing the priority queue data structure:
 struct pQueue
 {
     int *queue; // The array of pointers to items that represents the queue (position 0 is for the size)
     int limit; // The maximum amount of items that the queue can hold
 };
+
+/**
+ * Function that fixes the value of a key upwards
+ * 
+ * Inputs: pointer to the queue and the position that must be fixed
+ * Output: none
+ * Conditions: existent and allocated queue and valid position
+ * Side effects: the queue is reorganized
+ */
+static void FixUp(PQueue *pQueue, int pos)
+{
+    while (pos > 1 && pQueue->queue[pos / 2] > pQueue->queue[pos])
+    {
+        EXCH(pQueue->queue[pos / 2], pQueue->queue[pos]);
+        pos /= 2;
+    }
+}
+
+/**
+ * Function that fixes the value of a key downwards
+ * 
+ * Inputs: pointer to the queue and the position that must be fixed
+ * Output: none
+ * Conditions: existent and allocated queue and valid position
+ * Side effects: the queue is reorganized
+ */
+static void FixDown(PQueue *pQueue, int pos)
+{
+    int size = PQueue_GetSize(pQueue) - 1;
+    while (2 * pos < size)
+    {
+        int j = 2 * pos;
+        // If the 2k pos. son is bigger then the 2k+1 pos. son, the 2k+1 pos. son will be exchanged with the current item
+        if (j < size && pQueue->queue[j] > pQueue->queue[j + 1])
+            j++;
+        // If the current item and the son are equal, the operation can stop
+        if (pQueue->queue[pos] <= pQueue->queue[j])
+            break;
+        EXCH(pQueue->queue[pos], pQueue->queue[j]); // Exchanging the son and the father
+        pos = j;
+    }
+}
 
 // Implementing the function that creates the priority queue:
 PQueue *PQueue_Create(int size)
@@ -64,11 +108,7 @@ bool PQueue_Insert(PQueue *pQueue, int item)
     }
     pQueue->queue[top] = item; // Putting the item in the queue
     // Fixing the position of the item:
-    while (top > 1 && pQueue->queue[top / 2] < pQueue->queue[top]) // While the item is smaller then it's father...
-    {
-        EXCH(pQueue->queue[top / 2], pQueue->queue[top]); // Changing the positions
-        top /= 2; // Getting the position of the new father
-    }
+    FixUp(pQueue, top);
     return true;
 }
 
@@ -91,17 +131,24 @@ int PQueue_RemoveFirst(PQueue *pQueue)
     int min = pQueue->queue[1]; // Getting the most important item in the queue
     EXCH(pQueue->queue[1], pQueue->queue[pQueue->queue[0] + 1]); // Putting it in a position that "isn't in the queue anymore" (the size was updated to not reach this position)
     int k = 1; // Loop counter
-    while (2 * k <= size) // If the supposed position of the son is not bigger then the size...
-    {
-        int j = 2 * k; // Storing the son's position
-        // If the 2k pos. son is bigger then the 2k+1 pos. son, the 2k+1 pos. son will be exchanged with the current item
-        if (j < size && pQueue->queue[j] < pQueue->queue[j + 1]) j++;
-        // If the current item and the son are equal, the operation can stop
-        if (pQueue->queue[k] >= pQueue->queue[j]) break;
-        EXCH(pQueue->queue[k], pQueue->queue[j]); // Exchanging the son and the father
-        k = j; // Updating the counter
-    }
+    FixDown(pQueue, k);
     return min; // Returing the most important item
+}
+
+// Implementing the function that changes the key of a given item:
+void PQueue_ChangeKey(PQueue *pQueue, int prevKey, int newKey)
+{
+    int i;
+    for (i = 1; i < PQueue_GetSize(pQueue) - 1; i++)
+    {
+        if (pQueue->queue[i] == prevKey)
+        {
+            pQueue->queue[i] = newKey;
+            break;
+        }
+    }
+    if (prevKey > newKey) FixUp(pQueue, i);
+    else FixDown(pQueue, i);
 }
 
 // Implementing the function that prints the queue:
