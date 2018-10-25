@@ -23,4 +23,14 @@ int WorstFit(int *weights, int length, int limit);
 
 // TODO: make the prototype to the best fit heuristic
 
+/**
+ * Function that implements the best fit heuristic
+ * 
+ * Inputs: array of weights, the length of the array and the size of each bin
+ * Output: the amount of bins created
+ * Conditions: existent and allocated array and correct length
+ * Side effects: a binary search tree will be created to solve the problem
+ */
+int BestFit(int *weights, int length, int limit);
+
 #endif // FIT_H_

@@ -37,6 +37,36 @@ BST *BST_Create(int key);
 BST *BST_Destroy(BST *root);
 
 /**
+ * Key getter
+ * 
+ * Input: pointer to the node
+ * Output: the node's key
+ * Conditions: existent and allocated node
+ * Side effects: none
+ */
+int BST_GetKey(BST *node);
+
+/**
+ * Right subtree getter
+ * 
+ * Input: pointer to the node
+ * Output: pointer to the node's right subtree
+ * Conditions: existent and allocated node
+ * Side effects: none
+ */
+BST *BST_GetRight(BST *node);
+
+/**
+ * Left subtree getter
+ * 
+ * Input: pointer to the node
+ * Output: pointer to the node's left subtree
+ * Conditions: existent and allocated node
+ * Side effects: none
+ */
+BST *BST_GetLeft(BST *node);
+
+/**
  * Function that checks if a given node is a leaf
  * 
  * Input: pointer to the node
@@ -56,16 +86,24 @@ bool BST_Leaf(BST *node);
  */
 bool BST_Insert(BST *root, int key);
 
-// TODO: remove operation's prototype
-
 /**
  * Function that removes a node from the tree
  * 
- * Inputs: pointer to the tree's root node and the target node's key
- * Output: pointer to the target node
- * Conditions: existent and allocated tree
- * Side effects: the tree will be reorganized
+ * Inputs: pointer to the root node, the key of the target node
+ * Output: pointer to the reorganized tree
+ * Conditions: existent and allocated tree, valid key and target holder pointing to NULL
+ * Side effects: the target node will be removed and the tree will be reorganized
  */
 BST *BST_Remove(BST *root, int key);
+
+/**
+ * Function that prints the elements in a binary tree
+ * 
+ * Input: pointer to the tree's root node
+ * Output: none
+ * Conditions: existent and allocated tree
+ * Side effects: none
+ */
+void BST_Print(BST *root);
 
 #endif // BST_H_

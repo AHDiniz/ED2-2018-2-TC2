@@ -10,6 +10,7 @@
 
 #include "../include/bst.h"
 #include <stdlib.h>
+#include <stdio.h>
 
 // Implementing the binary search tree node structure:
 struct bst
@@ -30,10 +31,29 @@ BST *BST_Create(int key)
 // Implementing the function that destroys a BST given it's root node:
 BST *BST_Destroy(BST *root)
 {
+    if (root == NULL) return NULL;
     if (root->left != NULL) BST_Destroy(root->left); // Destroying the left subtree
     if (root->right != NULL) BST_Destroy(root->right); // Destroying the right subtree
     free(root); // Destroying the root node
     return NULL;
+}
+
+// Implementing the function that returns the node's key:
+int BST_GetKey(BST *node)
+{
+    return node->key;
+}
+
+// Implementing the function that returns the node's right subtree:
+BST *BST_GetRight(BST *node)
+{
+    return node->right;
+}
+
+// Implementing the function that returns the node's left subtree:
+BST *BST_GetLeft(BST *node)
+{
+    return node->left;
 }
 
 // Implementing the function that tells if a node is or isn't a leaf:
@@ -46,32 +66,95 @@ bool BST_Leaf(BST *node)
 bool BST_Insert(BST *root, int key)
 {
     if (root == NULL) return false; // NULL pointer detection
-    if (root->key > key) // If the given key is smaller then the root's key...
+    // if (root->key > key) // If the given key is smaller then the root's key...
+    // {
+    //     // The key will be added to the left subtree:
+    //     if (root->left != NULL) return BST_Insert(root->left, key);
+    //     BST *node = BST_Create(key);
+    //     root->left = node;
+    //     return true;
+    // }
+    // else // If the given key is smaller then or equal to the root's key...
+    // {
+    //     // The key will be added to the right subtree:
+    //     if (root->right != NULL) return BST_Insert(root->right, key);
+    //     BST *node = BST_Create(key);
+    //     root->right = node;
+    //     return true;
+    // }
+
+    // Trying iterative implementation:
+    BST *current = root; // Current item in the tree
+    BST *prev; // Previous item in the tree
+    while (current != NULL) // Looping while the current node is not NULL
     {
-        // The key will be added to the left subtree:
-        if (root->left != NULL) return BST_Insert(root->left, key);
-        BST *node = BST_Create(key);
-        root->left = node;
-        return true;
+        prev = current;
+        current = (current->key > key) ? current->left : current->right;
     }
-    else // If the given key is smaller then or equal to the root's key...
-    {
-        // The key will be added to the right subtree:
-        if (root->right != NULL) return BST_Insert(root->right, key);
-        BST *node = BST_Create(key);
-        root->right = node;
-        return true;
-    }
+    if (prev->key > key)
+        prev->left = BST_Create(key);
+    else
+        prev->right = BST_Create(key);
+    return true;
 }
 
-// TODO: remove operation implementation
-
-// Implementing the function that removes a node from the tree:
+// Implementing the function that removes a node from a tree:
 BST *BST_Remove(BST *root, int key)
 {
     if (root == NULL) return NULL; // NULL pointer detection
+    // Checking if the target is in the left subtree:
     if (key < root->key)
-        return BST_Remove(root->left, key);
-    if (key < root->key)
-        return BST_Remove(root->right, key);
+        root->left = BST_Remove(root->left, key); // Removing the target node
+    // Checking if the target is in the right subtree:
+    if (key > root->key)
+        root->right = BST_Remove(root->right, key); // Removing the target node
+    // Checking if the root node is the target:
+    if (root->key == key)
+    {
+        // Checking if the target is a leaf node:
+        if (root->left == NULL && root->right == NULL)
+        {
+            // Destroying the node and make the return be NULL:
+            free(root);
+            root = NULL;
+        }
+        else if (root->left == NULL) // Only has the right subtree
+        {
+            // Making the return be the right subtree and destroying the target node:
+            BST *destroy = root;
+            root = root->right;
+            free(destroy);
+        }
+        else if (root->right == NULL) // Only has the left subtree
+        {
+            // Analogue to the previous case:
+            BST *destroy = root;
+            root = root->left;
+            free(destroy);
+        }
+        else // Has both subtrees
+        {
+            // Looking for the closest key to the root's in the left subtree:
+            BST *prev = root->left;
+            while(prev->right != NULL)
+            {
+                prev = prev->right;
+            }
+            // Switching the keys so the target node has zero or one subtree:
+            root->key = prev->key;
+            prev->key = key;
+            // Removing the new target node:
+            root->left = BST_Remove(root->left, key);
+        }
+    }
+    return root;
+}
+
+// Implementing the function that prints a binary search tree:
+void BST_Print(BST *root)
+{
+    printf("<%d ", root->key);
+    if (root->left != NULL) BST_Print(root->left);
+    if (root->right != NULL) BST_Print(root->right);
+    printf(">");
 }

@@ -7,13 +7,13 @@
  *
  * main.c: Program's entry point
  * 
+ * TODO: Fix the Worst Fit heuristic
  * TODO: test the BST data structure
  */
 
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "../include/priority_queue.h"
 #include "../include/fit.h"
 
 #define LIMIT 1000000
@@ -47,10 +47,12 @@ int main(int argc, char *argv[])
 	
 	// Applying the worst fit heuristic:
 	printf("%d\n", WorstFit(weights, length, LIMIT));
-	// TODO: apply best fit heuristic
+	// Applying the best fit heuristic:
+	// printf("%d\n", BestFit(weights, length, LIMIT));
 	// Applying the decreasing worst fit heuristic:
 	printf("%d\n", WorstFit(wSort, length, LIMIT));
-	// TODO: apply decresing best fit heuristic
+	// Applying the decreasing best fit heuristic:
+	// printf("%d\n", BestFit(wSort, length, LIMIT));
 
 	free(weights);
 	free(wSort);
@@ -62,5 +64,5 @@ int Cmp(const void *a, const void *b)
 {
 	int *numA = (int *)a;
 	int *numB = (int *)b;
-	return -(*numA - *numB);
+	return (*numA - *numB);
 }
