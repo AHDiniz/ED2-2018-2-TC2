@@ -77,6 +77,16 @@ BST *BST_GetLeft(BST *node);
 bool BST_Leaf(BST *node);
 
 /**
+ * Function that searches a node in a binary search tree
+ * 
+ * Inputs: pointer to the tree and the target's key
+ * Output: pointer to the target node or NULL if it's not in the tree
+ * Conditions: existent and allocated tree
+ * Side effects: none
+ */
+BST *BST_Search(BST *tree, int key);
+
+/**
  * Function that inserts a key to a BST
  * 
  * Inputs: pointer to the root node of the tree and the key that will be added

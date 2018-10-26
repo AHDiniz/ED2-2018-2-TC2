@@ -62,6 +62,16 @@ bool BST_Leaf(BST *node)
     return node->right == NULL && node->left == NULL;
 }
 
+// Implementing the function that searches a node in the tree:
+BST *BST_Search(BST *tree, int key)
+{
+    if (tree == NULL) return NULL; // NULL pointer detection
+    // Searching for the key: if the current key is smaller, go left, else, go right:
+    BST *node;
+    for (node = tree; key != node->key && node != NULL; node = (key < node->key) ? node->left : node->right);
+    return node;
+}
+
 // Implementing the function that inserts a key to the tree:
 bool BST_Insert(BST *root, int key)
 {

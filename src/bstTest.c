@@ -35,7 +35,7 @@ int main(int argc, char *argv[])
 
     int removed = num;
 
-    printf("Insira o valor do no que sera removido da arvore:\n");
+    printf("Insert the value that will be removed from the tree:\n");
     scanf("%d", &removed);
 
     tree = BST_Remove(tree, removed);

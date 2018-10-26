@@ -55,11 +55,11 @@ int main(int argc, char *argv[])
 	// Applying the worst fit heuristic:
 	printf("%d\n", WorstFit(weights, length, LIMIT));
 	// Applying the best fit heuristic:
-	// printf("%d\n", BestFit(weights, length, LIMIT));
+	printf("%d\n", BestFit(weights, length, LIMIT));
 	// Applying the decreasing worst fit heuristic:
 	printf("%d\n", WorstFit(wSort, length, LIMIT));
 	// Applying the decreasing best fit heuristic:
-	// printf("%d\n", BestFit(wSort, length, LIMIT));
+	printf("%d\n", BestFit(wSort, length, LIMIT));
 
 	free(weights);
 	free(wSort);
