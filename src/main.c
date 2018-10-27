@@ -43,23 +43,29 @@ int main(int argc, char *argv[])
 
 	// Creating the decreasing ordered array:
 	int *wSort = malloc(sizeof(int) * length); // Allocating the array that will be sorted
-	for (i = 0; i < length; i ++) wSort[i] = weights[i]; // Copying the original array into the new one
 	
+	// Sorting the array with heap sort:
 	PQueue *sorter = PQueue_Create(length);
 
-	for (i = 0; i < length; i++) PQueue_Insert(sorter, wSort[i]);
+	for (i = 0; i < length; i++) PQueue_Insert(sorter, weights[i]);
 	for (i = length - 1; i >= 0; i--) wSort[i] = PQueue_RemoveFirst(sorter);
 
 	PQueue_Destroy(sorter);
-	
+
+	// printf("Array: ");
+	// for (i = 0; i < length; i++) printf("%d ", weights[i]);
+	// printf("\nSorted Array: ");
+	// for (i = 0; i < length; i++) printf("%d ", wSort[i]);
+	// printf("\n");
+
 	// Applying the worst fit heuristic:
 	printf("%d\n", WorstFit(weights, length, LIMIT));
 	// Applying the best fit heuristic:
-	printf("%d\n", BestFit(weights, length, LIMIT));
+	// printf("%d\n", BestFit(weights, length, LIMIT));
 	// Applying the decreasing worst fit heuristic:
 	printf("%d\n", WorstFit(wSort, length, LIMIT));
 	// Applying the decreasing best fit heuristic:
-	printf("%d\n", BestFit(wSort, length, LIMIT));
+	// printf("%d\n", BestFit(wSort, length, LIMIT));
 
 	free(weights);
 	free(wSort);
