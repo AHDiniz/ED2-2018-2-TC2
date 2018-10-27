@@ -13,7 +13,7 @@
 
 #include <stdbool.h>
 
-// Defining the binary search tree data type
+// Defining the binary search tree data type:
 typedef struct bst BST;
 
 /**
@@ -34,7 +34,7 @@ BST *BST_Create(int key);
  * Conditions: existent and allocated tree
  * Side effects: the structure is cleared from memory
  */
-BST *BST_Destroy(BST *root);
+BST *BST_Destroy(BST *tree);
 
 /**
  * Key getter
@@ -90,11 +90,11 @@ BST *BST_Search(BST *tree, int key);
  * Function that inserts a key to a BST
  * 
  * Inputs: pointer to the root node of the tree and the key that will be added
- * Output: bool that tells if the operation was or wasn't a success
+ * Output: pointer to the reorganized tree
  * Conditions: existent and allocated root node
  * Side effects: a new node will be created to the given key
  */
-bool BST_Insert(BST *root, int key);
+BST *BST_Insert(BST *tree, int key);
 
 /**
  * Function that removes a node from the tree
@@ -104,7 +104,7 @@ bool BST_Insert(BST *root, int key);
  * Conditions: existent and allocated tree, valid key and target holder pointing to NULL
  * Side effects: the target node will be removed and the tree will be reorganized
  */
-BST *BST_Remove(BST *root, int key);
+BST *BST_Remove(BST *tree, int key);
 
 /**
  * Function that prints the elements in a binary tree
@@ -114,6 +114,6 @@ BST *BST_Remove(BST *root, int key);
  * Conditions: existent and allocated tree
  * Side effects: none
  */
-void BST_Print(BST *root);
+void BST_Print(BST *tree);
 
 #endif // BST_H_

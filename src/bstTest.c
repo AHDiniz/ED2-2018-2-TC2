@@ -13,39 +13,33 @@
 
 int main(int argc, char *argv[])
 {
-    FILE *file = fopen(argv[1], "r"); // Opening the given file
-    
-    BST *tree = NULL; // Creating a new binary search tree
+    FILE *file = fopen(argv[1], "r"); // Opening the file with the data about the tree:
+
+    BST *tree = NULL; // Tree pointer
 
     int num = 0;
-    // Reading the file while it's still possible:
-    while (fscanf(file, "%d\n", &num) != EOF)
+    while (!feof(file))
     {
-        if (tree == NULL) // If the tree was not created properly...
-            tree = BST_Create(num); // The tree will be created
-        else // Otherwise...
-            BST_Insert(tree, num); // The number will be inserted in the tree
+        fscanf(file, "%d\n", &num);
+        tree = BST_Insert(tree, num);
     }
+
+    // Printing the tree:
+    BST_Print(tree);
+    printf("\n");
+
+    // Removing an item:
+    printf("Which number you would like to remove?\n");
+    scanf("%d", &num);
+    tree = BST_Remove(tree, num);
+
+    // Printing the tree:
+    BST_Print(tree);
+    printf("\n");
+
+    tree = BST_Destroy(tree);
+
     fclose(file);
-
-    BST_Print(tree); // Printing the tree
-    printf("\n");
-
-    printf("Is the tree a lead node? %s\n", (BST_Leaf(tree)) ? "Yes" : "No");
-
-    int removed = num;
-
-    printf("Insert the value that will be removed from the tree:\n");
-    scanf("%d", &removed);
-
-    tree = BST_Remove(tree, removed);
-
-    BST_Print(tree); // Printing the tree
-    printf("\n");
-
-    printf("Item removed = %d\n", removed);
-
-    BST_Destroy(tree); // Destroying the tree
 
     return 0;
 }

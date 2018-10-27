@@ -7,13 +7,13 @@
  *
  * main.c: Program's entry point
  * 
- * TODO: Fix the Worst Fit heuristic
  * TODO: test the BST data structure
  */
 
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <time.h>
 #include "../include/fit.h"
 #include "../include/priority_queue.h"
 
@@ -58,14 +58,23 @@ int main(int argc, char *argv[])
 	// for (i = 0; i < length; i++) printf("%d ", wSort[i]);
 	// printf("\n");
 
+	clock_t start = clock();
+	int worstFit = WorstFit(weights, length, LIMIT);
+	int bestFit = BestFit(weights, length, LIMIT);
+	int worstFitDec = WorstFit(wSort, length, LIMIT);
+	int bestFitDec = BestFit(wSort, length, LIMIT);
+	clock_t end = clock();
+	double exeTime = ((double) (end - start) / CLOCKS_PER_SEC);
+	printf("Execution time = %f\n", exeTime);
+
 	// Applying the worst fit heuristic:
-	printf("%d\n", WorstFit(weights, length, LIMIT));
+	printf("%d\n", worstFit);
 	// Applying the best fit heuristic:
-	// printf("%d\n", BestFit(weights, length, LIMIT));
+	printf("%d\n", bestFit);
 	// Applying the decreasing worst fit heuristic:
-	printf("%d\n", WorstFit(wSort, length, LIMIT));
+	printf("%d\n", worstFitDec);
 	// Applying the decreasing best fit heuristic:
-	// printf("%d\n", BestFit(wSort, length, LIMIT));
+	printf("%d\n", bestFitDec);
 
 	free(weights);
 	free(wSort);

@@ -47,68 +47,43 @@ int WorstFit(int *weights, int length, int limit)
  * Function that looks for the node with the smallest empty space that can fit the current weight
  * 
  * Inputs: pointer to the tree's root, the weight and the limit
- * Output: a boolean that tells if the node was found
+ * Output: pointer to the best node or NULL
  * Conditions: existent and allocated tree
  * Side effects: new nodes might be added to the tree
  */
-static bool FindBestNode(BST *root, int weight, int limit)
+static BST *FindBestNode(BST *root, int weight, int limit)
 {
-    bool result = false; // Tells if the operation was or wasn't a success
-    
-    BST *current = root; // Points to the node of the current iteration of the loop
-    BST *previous; // Points to the node of the previous iteration of the loop
-
-    while (current != NULL && BST_GetKey(current) + weight <= limit) // While the tree is still "walkable" (if that exists ¯\_(ツ)_/¯)...
+    if (root == NULL) return NULL;
+    if (weight + BST_GetKey(root) <= limit) // If the weight fits in the node
     {
-        previous = current; // Storing the value of the iteration's node
-        current = BST_GetRight(current); // Going to the right subtree if the weight fits in the node
+        // Getting the best node:
+        BST *best = FindBestNode(BST_GetRight(root), weight, limit);
+        if (best == NULL) return root;
+        else if (weight + BST_GetKey(best) <= limit) return best;
+        else return root;
     }
-    current = previous; // Fixing the value of the current node (in the end of the loop current is NULL)
-
-    if (current == NULL) return false;
-
-    int key = BST_GetKey(current);
-    if (key + weight <= limit) // If the weight fits in the current bin...
-    {
-        BST_Remove(root, key); // Removing the best node
-        BST_Insert(root, key + limit); // Readding the updated node
-        result = true; // The best node was found
-    }
-    else
-    {
-        while (current != NULL && BST_GetKey(current) + weight <= limit) // While the tree is still "walkable" (if that exists ¯\_(ツ)_/¯)...
-        {
-            previous = current; // Storing the value of the iteration's node
-            current = BST_GetLeft(current); // Going to the right subtree if the weight fits in the node
-        }
-        current = previous;
-
-        key = BST_GetKey(current);
-        if (key + weight <= limit) // If the weight fits in the current bin...
-        {
-            BST_Remove(root, key); // Removing the best node
-            BST_Insert(root, key + limit); // Readding the updated node
-            result = true; // The best node was found
-        }
-        else result = false;
-    }
-
-    return result;
+    else return FindBestNode(BST_GetLeft(root), weight, limit);
 }
 
 // Implementing the best fit heuristic:
 int BestFit(int *weights, int length, int limit)
 {
     BST *bins = BST_Create(weights[0]); // Creating a new binary search tree to represent the bins
-    int size = 0; // The amount of bins used
+    int size = 1; // The amount of bins used
 
-    for (int i = 0; i < length; i++)
+    for (int i = 1; i < length; i++)
     {
-        // Looking for the bin with the smallest empty space where the wieght fits:
-        if (!FindBestNode(bins, weights[i], limit)) // If it doesn't...
+        BST *best = FindBestNode(bins, weights[i], limit);
+        if (best == NULL)
         {
-            BST_Insert(bins, weights[i]); // Insert the weight in the bins
-            size++; // The size increased
+            bins = BST_Insert(bins, weights[i]);
+            size++;
+        }
+        else
+        {
+            int bin = BST_GetKey(best);
+            bins = BST_Remove(bins, bin);
+            bins = BST_Insert(bins, bin + weights[i]);
         }
     }
     

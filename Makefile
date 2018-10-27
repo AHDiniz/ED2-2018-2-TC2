@@ -37,7 +37,7 @@ fit.o: $(SRC)/fit.c
 bst.o: $(SRC)/bst.c
 	$(CC) -c $^ $(C_FLAGS)
 
-bstTest: $(SRC)/bstTest.c $(SRC)/bst.o
+bstTest: $(SRC)/bstTest.c $(SRC)/bst.c
 	$(CC) -o $@ $^ $(C_FLAGS)
 
 pqTest: $(SRC)/pqTest.c $(SRC)/priority_queue.o
