@@ -7,7 +7,6 @@
  *
  * main.c: Program's entry point
  * 
- * TODO: test the BST data structure
  */
 
 #include <stdio.h>
@@ -52,20 +51,10 @@ int main(int argc, char *argv[])
 
 	PQueue_Destroy(sorter);
 
-	// printf("Array: ");
-	// for (i = 0; i < length; i++) printf("%d ", weights[i]);
-	// printf("\nSorted Array: ");
-	// for (i = 0; i < length; i++) printf("%d ", wSort[i]);
-	// printf("\n");
-
-	clock_t start = clock();
 	int worstFit = WorstFit(weights, length, LIMIT);
 	int bestFit = BestFit(weights, length, LIMIT);
 	int worstFitDec = WorstFit(wSort, length, LIMIT);
 	int bestFitDec = BestFit(wSort, length, LIMIT);
-	clock_t end = clock();
-	double exeTime = ((double) (end - start) / CLOCKS_PER_SEC);
-	printf("Execution time = %f\n", exeTime);
 
 	// Applying the worst fit heuristic:
 	printf("%d\n", worstFit);
