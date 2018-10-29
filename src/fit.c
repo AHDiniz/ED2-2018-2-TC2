@@ -58,11 +58,11 @@ static BST *FindBestNode(BST *root, int weight, int limit)
     {
         // Getting the best node:
         BST *best = FindBestNode(BST_GetRight(root), weight, limit);
-        if (best == NULL) return root;
-        else if (weight + BST_GetKey(best) <= limit) return best;
-        else return root;
+        if (best == NULL) return root; // If the current bin is the best one, return it
+        else if (weight + BST_GetKey(best) <= limit) return best; // If it fits in the bin, return it
+        else return root; // Otherwise, return current bin
     }
-    else return FindBestNode(BST_GetLeft(root), weight, limit);
+    else return FindBestNode(BST_GetLeft(root), weight, limit); // Otherwise, search best bin in the left subtree
 }
 
 // Implementing the best fit heuristic:
@@ -71,21 +71,23 @@ int BestFit(int *weights, int length, int limit)
     BST *bins = BST_Create(weights[0]); // Creating a new binary search tree to represent the bins
     int size = 1; // The amount of bins used
 
-    for (int i = 1; i < length; i++)
+    for (int i = 1; i < length; i++) // For each weight given
     {
-        BST *best = FindBestNode(bins, weights[i], limit);
-        if (best == NULL)
+        BST *best = FindBestNode(bins, weights[i], limit); // Getting the best bin
+        if (best == NULL) // if the bin found is NULL (the weight doesn't fit in any bin)...
         {
+            // Create a new bin:
             bins = BST_Insert(bins, weights[i]);
             size++;
         }
-        else
+        else // If it does...
         {
+            // Remove, updated and reinsert the best bin:
             int bin = BST_GetKey(best);
             bins = BST_Remove(bins, bin);
             bins = BST_Insert(bins, bin + weights[i]);
         }
     }
     
-    return size;
+    return size; // Returning the amount of bins used
 }
